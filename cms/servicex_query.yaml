@@ -1,0 +1,6 @@
+Sample:
+  - Name: 'Single Muon'
+    Dataset: !FileList
+      ['root://cmsxrootd.fnal.gov//store/data/Run2018A/SingleMuon/NANOAOD/UL2018_MiniAODv2_NanoAODv9-v2/2550000/171C5530-5150-7C44-9029-40794C1FDBF5.root']
+    Query: !FuncADL_Uproot |
+            FromTree('Events').Select(lambda events: {'Muon': {'pt': events['Muon_pt'], 'eta': events['Muon_eta'], 'phi': events['Muon_phi'], 'mass': events['Muon_mass'], 'miniIsoId': events['Muon_miniIsoId'], 'tightId': events['Muon_tightId'], 'charge': events['Muon_charge']}.Zip(), 'FatJet': {'particleNet_TvsQCD': events['FatJet_particleNet_TvsQCD'], 'pt': events['FatJet_pt'], 'eta': events['FatJet_eta'], 'phi': events['FatJet_phi'], 'mass': events['FatJet_mass']}.Zip(), 'Jet': {'btagDeepB': events['Jet_btagDeepB'], 'jetId': events['Jet_jetId'], 'pt': events['Jet_pt'], 'eta': events['Jet_eta'], 'phi': events['Jet_phi'], 'mass': events['Jet_mass']}.Zip(), 'PuppiMET_pt': events['PuppiMET_pt'], 'PuppiMET_phi': events['PuppiMET_phi'], 'HLT_Mu50': events['HLT_Mu50'], 'run': events['run'], 'luminosityBlock': events['luminosityBlock'], 'event': events['event']}).Where( lambda e : e['HLT_Mu50'] ).Where( lambda e : e['PuppiMET_pt'] > 50 )
